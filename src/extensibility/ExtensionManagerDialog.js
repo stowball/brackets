@@ -82,10 +82,19 @@ define(function (require, exports, module) {
             )
                 .done(function (buttonId) {
                     if (buttonId === "ok") {
+                        var blockerDlg = Dialogs.showModalDialog(
+                            DefaultDialogs.DIALOG_ID_INFO,
+                            Strings.CHANGE_AND_QUIT_TITLE,
+                            Strings.PROCESSING_EXTENSIONS,
+                            [],
+                            false,
+                            false
+                        );
                         ExtensionManager.removeMarkedExtensions()
                             .done(function () {
                                 ExtensionManager.updateExtensions()
                                     .done(function () {
+                                        blockerDlg.close();
                                         CommandManager.execute(Commands.FILE_QUIT);
                                     })
                                     .fail(function (errorArray) {
@@ -109,6 +118,7 @@ define(function (require, exports, module) {
                                             StringUtils.format(Strings.EXTENSION_MANAGER_UPDATE_ERROR, ids.join(", "))
                                         ).done(function () {
                                             // We still have to quit even if some of the removals failed.
+                                            blockerDlg.close();
                                             CommandManager.execute(Commands.FILE_QUIT);
                                         });
                                     });
@@ -126,6 +136,7 @@ define(function (require, exports, module) {
                                     StringUtils.format(Strings.EXTENSION_MANAGER_REMOVE_ERROR, ids.join(", "))
                                 ).done(function () {
                                     // We still have to quit even if some of the removals failed.
+                                    blockerDlg.close();
                                     CommandManager.execute(Commands.FILE_QUIT);
                                 });
                             });

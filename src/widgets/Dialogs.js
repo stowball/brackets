@@ -217,9 +217,10 @@ define(function (require, exports, module) {
      * @param {boolean=} autoDismiss Whether to automatically dismiss the dialog when one of the buttons
      *      is clicked. Default true. If false, you'll need to manually handle button clicks and the Esc
      *      key, and dismiss the dialog yourself when ready with `cancelModalDialogIfOpen()`.
+     * @param {boolean=} showClose Whether to show the "x" button in the upper right. Default true.
      * @return {Dialog}
      */
-    function showModalDialogUsingTemplate(template, autoDismiss) {
+    function showModalDialogUsingTemplate(template, autoDismiss, showClose) {
         if (autoDismiss === undefined) {
             autoDismiss = true;
         }
@@ -232,6 +233,9 @@ define(function (require, exports, module) {
                 .addClass("instance")
                 .appendTo(".modal-inner-wrapper:last");
         
+        if (showClose === false) {
+            $dlg.find(".close").hide();
+        }
         // Save the dialog promise for unit tests
         $dlg.data("promise", promise);
 
@@ -263,7 +267,7 @@ define(function (require, exports, module) {
             //Remove wrapper
             $(".modal-wrapper:last").remove();
         }).one("shown", function () {
-            // Set focus to the default button
+            // Set focus to the default buttonx
             var primaryBtn = $dlg.find(".primary");
 
             if (primaryBtn) {
@@ -312,19 +316,26 @@ define(function (require, exports, module) {
      * @param {string=} message The message to display in the dialog. Can contain HTML markup. Defaults to "".
      * @param {Array.<{className: string, id: string, text: string}>=} buttons An array of buttons where each button
      *      has a class, id and text property. The id is used in "data-button-id". Defaults to a single Ok button.
-     *      Typically className is one of DIALOG_BTN_CLASS_*, id is one of DIALOG_BTN_*
+     *      Typically className is one of DIALOG_BTN_CLASS_*, id is one of DIALOG_BTN_*. To have no buttons, you
+     *      must explicitly pass an empty array (this should only be used in very rare cases where you want a
+     *      dialog that the user can't dismiss, e.g. during a critical blocking operation).
+     * @param {boolean} autoDismiss Whether to automatically dismiss the dialog when one of the buttons
+     *      is clicked. Default true. If false, you'll need to manually handle button clicks and the Esc
+     *      key, and dismiss the dialog yourself when ready with `cancelModalDialogIfOpen()`.
+     * @param {boolean} showClose Whether to show the "x" button in the upper right. Default true.
      * @return {Dialog}
      */
-    function showModalDialog(dlgClass, title, message, buttons) {
+    function showModalDialog(dlgClass, title, message, buttons, autoDismiss, showClose) {
         var templateVars = {
             dlgClass: dlgClass,
             title:    title   || "",
             message:  message || "",
-            buttons:  buttons || [{ className: DIALOG_BTN_CLASS_PRIMARY, id: DIALOG_BTN_OK, text: Strings.OK }]
+            buttons:  buttons || [{ className: DIALOG_BTN_CLASS_PRIMARY, id: DIALOG_BTN_OK, text: Strings.OK }],
+            hasButtons: !buttons || buttons.length // if buttons was null, it will have the default button set above
         };
         var template = Mustache.render(DialogTemplate, templateVars);
         
-        return showModalDialogUsingTemplate(template);
+        return showModalDialogUsingTemplate(template, autoDismiss, showClose);
     }
     
     /**

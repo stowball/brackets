@@ -6,9 +6,11 @@
     <div class="modal-body">
         <div class="dialog-message">{{{message}}}</div>
     </div>
+    {{#hasButtons}}
     <div class="modal-footer">
         {{#buttons}}
         <button class="dialog-button btn {{className}}" data-button-id="{{id}}">{{{text}}}</button>
         {{/buttons}}
     </div>
+    {{/hasButtons}}
 </div>
