@@ -162,7 +162,7 @@ define(function (require, exports, module) {
             lineEndings = getPlatformLineEndings();
         }
         
-        var eolStr = (lineEndings === LINE_ENDINGS_CRLF ? "\n" : "\n");
+        var eolStr = "\n";
         var findAnyEol = /\r\n|\r|\n/g;
         
         return text.replace(findAnyEol, eolStr);
