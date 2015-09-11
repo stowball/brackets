@@ -246,7 +246,7 @@ define(function (require, exports, module) {
             var codeMirrorText = this._masterEditor._codeMirror.getValue();
             if (useOriginalLineEndings) {
                 if (this._lineEndings === FileUtils.LINE_ENDINGS_CRLF) {
-                    return codeMirrorText.replace(/\n/g, "\r\n");
+                    return codeMirrorText.replace(/\n/g, "\n");
                 }
             }
             return codeMirrorText;

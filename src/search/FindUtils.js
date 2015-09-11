@@ -217,7 +217,7 @@ define(function (require, exports, module) {
             var newContents = result.join("");
             // TODO: duplicated logic from Document - should refactor this?
             if (lineEndings === FileUtils.LINE_ENDINGS_CRLF) {
-                newContents = newContents.replace(/\n/g, "\r\n");
+                newContents = newContents.replace(/\n/g, "\n");
             }
 
             return Async.promisify(file, "write", newContents);

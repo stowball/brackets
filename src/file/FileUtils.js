@@ -130,7 +130,7 @@ define(function (require, exports, module) {
      * @return {LINE_ENDINGS_CRLF|LINE_ENDINGS_LF}
      */
     function getPlatformLineEndings() {
-        return brackets.platform === "win" ? LINE_ENDINGS_CRLF : LINE_ENDINGS_LF;
+        return LINE_ENDINGS_LF;
     }
     
     /**
@@ -147,7 +147,7 @@ define(function (require, exports, module) {
         if ((hasCRLF && hasLF) || (!hasCRLF && !hasLF)) {
             return null;
         } else {
-            return hasCRLF ? LINE_ENDINGS_CRLF : LINE_ENDINGS_LF;
+            return LINE_ENDINGS_LF;
         }
     }
 
@@ -162,7 +162,7 @@ define(function (require, exports, module) {
             lineEndings = getPlatformLineEndings();
         }
         
-        var eolStr = (lineEndings === LINE_ENDINGS_CRLF ? "\r\n" : "\n");
+        var eolStr = (lineEndings === LINE_ENDINGS_CRLF ? "\n" : "\n");
         var findAnyEol = /\r\n|\r|\n/g;
         
         return text.replace(findAnyEol, eolStr);
